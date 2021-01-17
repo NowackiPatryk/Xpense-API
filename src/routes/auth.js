@@ -21,4 +21,32 @@ router.post("/auth/register", async (req, res) => {
   });
 });
 
+router.post("/auth/login", async (req, res) => {
+  const { email, password } = req.body;
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    res.json({
+      status: "error",
+      error: "User with this combination not found",
+    });
+    return;
+  }
+  bcrypt.compare(password, user.password, (err, result) => {
+    if (err) console.log(err);
+    if (!result) {
+      res.json({
+        status: "error",
+        error: "User with this combination not found",
+      });
+      return;
+    }
+    const tokenData = {
+      id: user._id,
+      email: user.email,
+    };
+    const token = jwt.sign({ tokenData }, process.env.JWT_KEY);
+    res.json({ status: "success", token: token });
+  });
+});
+
 module.exports = router;
