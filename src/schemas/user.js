@@ -5,7 +5,7 @@ const emailRegExp = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+
 const userSchema = new Schema({
   email: {
     type: String,
-    required: "Email adress is required.",
+    required: [true, "Email adress is required."],
     unique: true,
     trim: true,
     match: [emailRegExp, "Please fill a valid email adress"],
@@ -13,9 +13,13 @@ const userSchema = new Schema({
   password: {
     type: String,
     required: "Please enter the password.",
-    minLength: 6,
-    maxLength: 15,
   },
+});
+
+userSchema.post("save", (err, doc, next) => {
+  if (err.name === "MongoError" && err.code === 11000)
+    next(new Error("User with this email already exist"));
+  else next();
 });
 
 const User = mongoose.model("User", userSchema);

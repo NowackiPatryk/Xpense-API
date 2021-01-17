@@ -9,6 +9,11 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+//routes
+const authRoutes = require("./routes/auth");
+
+app.use(authRoutes);
+
 //db connection
 const connectConfig = {
   useNewUrlParser: true,
