@@ -16,11 +16,13 @@ app.use(authRoutes);
 
 //db connection
 const connectConfig = {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
 };
+
 mongoose.connect(process.env.MONGODB_CONNECT_URL, connectConfig);
 const database = mongoose.connection;
+
 database.on("error", () => console.log("Connection error"));
 database.once("open", () => console.log("Connected!"));
 
