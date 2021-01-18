@@ -16,4 +16,6 @@ const expensesGroupSchema = new Schema({
     expenses: [expenseSchema],
 });
 
-module.exports = expensesGroupSchema;
+const ExpensesGroup = mongoose.model("expensesGroup", expensesGroupSchema);
+
+module.exports = ExpensesGroup;
