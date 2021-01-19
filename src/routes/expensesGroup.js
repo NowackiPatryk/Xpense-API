@@ -18,4 +18,10 @@ router.get(
     expensesGroupController.getById
 );
 
+router.post(
+    "/expenses/groups/update/:id",
+    validateToken,
+    expensesGroupController.updateById
+);
+
 module.exports = router;
