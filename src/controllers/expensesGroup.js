@@ -2,7 +2,13 @@ const ExpensesGroup = require("../models/expensesGroup");
 
 exports.getAll = async (req, res) => {
     const { tokenData } = req.decodedToken;
-    const expensesGroups = await ExpensesGroup.find({ userId: tokenData.id });
+
+    const expensesGroups = await ExpensesGroup.find({
+        userId: tokenData.id,
+    }).catch((err) => {
+        console.log(err);
+        res.json({ status: "error", error: err.toString() });
+    });
 
     res.json({ expensesGroups });
 };
@@ -16,6 +22,7 @@ exports.create = async (req, res) => {
         name: name,
         expenses: expenses,
     }).catch((err) => {
+        console.log(err);
         res.json({ status: "error", error: err.toString() });
     });
 
@@ -25,13 +32,10 @@ exports.create = async (req, res) => {
 exports.getById = async (req, res) => {
     const { id } = req.params;
 
-    const expensesGroup = await ExpensesGroup.findById(id);
-
-    if (!expensesGroup)
-        res.json({
-            status: "error",
-            error: "Expenses group with given id does not exist",
-        });
+    const expensesGroup = await ExpensesGroup.findById(id).catch((err) => {
+        console.log(err);
+        res.json({ status: "error", error: err.toString() });
+    });
 
     res.json({ expensesGroup });
 };
@@ -46,13 +50,10 @@ exports.updateById = async (req, res) => {
         id,
         updateData,
         callConfig
-    );
-
-    if (!updatedExpensesGroup)
-        res.json({
-            status: "error",
-            error: "Expenses group with given id does not exist",
-        });
+    ).catch((err) => {
+        console.log(err);
+        res.json({ status: "error", error: err.toString() });
+    });
 
     res.json({ updatedExpensesGroup });
 };
