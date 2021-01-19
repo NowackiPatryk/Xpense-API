@@ -48,3 +48,13 @@ exports.updateById = async (req, res) => {
 
     res.json({ updatedExpensesGroup });
 };
+
+exports.deleteById = async (req, res) => {
+    const { id } = req.params;
+
+    const deletedExpensesGroup = await ExpensesGroup.findByIdAndDelete(
+        id
+    ).catch((err) => handleMongoError(err));
+
+    res.json({ status: "success" });
+};
