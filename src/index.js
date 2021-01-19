@@ -11,8 +11,10 @@ app.use(bodyParser.json());
 
 //routes
 const authRoutes = require("./routes/auth");
+const expensesGroupRoutes = require("./routes/expensesGroup");
 
 app.use(authRoutes);
+app.use(expensesGroupRoutes);
 
 //db connection
 const connectConfig = {
