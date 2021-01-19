@@ -24,4 +24,10 @@ router.post(
     expensesGroupController.updateById
 );
 
+router.delete(
+    "/expenses/groups/delete/:id",
+    validateToken,
+    expensesGroupController.deleteById
+);
+
 module.exports = router;
