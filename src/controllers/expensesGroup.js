@@ -21,3 +21,12 @@ exports.create = async (req, res) => {
 
     res.json({ status: "success" });
 };
+
+exports.getById = async (req, res) => {
+    const { id } = req.params;
+    const { tokenData } = req.decodedToken;
+
+    const expensesGroup = await ExpensesGroup.findById(id);
+
+    res.json({ expensesGroup });
+};
