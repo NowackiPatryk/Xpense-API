@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcryptjs");
 const User = require("../models/user");
+const handleMongoError = require("../helpers/handleMongoError");
 
 exports.register = async (req, res) => {
     const { email, password } = req.body;
@@ -9,10 +10,7 @@ exports.register = async (req, res) => {
     const response = await User.create({
         email: email,
         password: hashedPassword,
-    }).catch((err) => {
-        console.log(err);
-        res.json({ status: "error", error: err.toString() });
-    });
+    }).catch((err) => handleMongoError(err));
 
     res.status(200).json({
         status: "success",
@@ -21,7 +19,9 @@ exports.register = async (req, res) => {
 
 exports.login = async (req, res) => {
     const { email, password } = req.body;
-    const user = await User.findOne({ email: email });
+    const user = await User.findOne({ email: email }).catch((err) =>
+        handleMongoError(err)
+    );
 
     if (!user) {
         res.json({
