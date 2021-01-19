@@ -12,4 +12,10 @@ router.get(
 
 router.post("/expenses/group", validateToken, expensesGroupController.create);
 
+router.get(
+    "/expenses/groups/:id",
+    validateToken,
+    expensesGroupController.getById
+);
+
 module.exports = router;
