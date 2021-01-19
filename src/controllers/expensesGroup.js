@@ -29,3 +29,16 @@ exports.getById = async (req, res) => {
 
     res.json({ expensesGroup });
 };
+
+exports.updateById = async (req, res) => {
+    const { id } = req.params;
+    const { name, expenses } = req.body;
+    const updateData = { name: name, expenses: expenses };
+
+    const updatedExpensesGroup = await ExpensesGroup.findByIdAndUpdate(
+        id,
+        updateData
+    );
+
+    res.json({ updatedExpensesGroup });
+};
